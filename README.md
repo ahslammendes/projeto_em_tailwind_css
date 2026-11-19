@@ -1,6 +1,6 @@
-# SENAI DevHub — Aplicação com Tailwind CSS & Spectra Design System
+﻿# DevHub — Aplicação com Tailwind CSS & Spectra Design System
 
-Projeto acadêmico desenvolvido para a **Faculdade SENAI**, aplicando integralmente o **Spectra Design System** sobre **Tailwind CSS v4** na plataforma **SENAI DevHub — Portal de Trilhas & Projetos Tech**, utilizando mais de **30 classes utilitárias distintas** abrangendo cores, tipografia, dimensões, bordas, Flexbox, CSS Grid e responsividade.
+Projeto acadêmico aplicando integralmente o **Spectra Design System** sobre **Tailwind CSS v4** na plataforma **DevHub — Portal de Trilhas & Projetos Tech**, utilizando mais de **30 classes utilitárias distintas** abrangendo cores, tipografia, dimensões, bordas, Flexbox, CSS Grid e responsividade.
 
 ---
 
@@ -31,11 +31,11 @@ Projeto acadêmico desenvolvido para a **Faculdade SENAI**, aplicando integralme
 
 ### 1. Aplicação Executando — Desktop (`1440px`)
 
-![Aplicação SENAI DevHub com Spectra Design System em Desktop](docs/prints/app-desktop.png)
+![Aplicação DevHub com Spectra Design System em Desktop](docs/prints/app-desktop.png)
 
 ### 2. Aplicação Executando — Mobile Responsivo (`520px`)
 
-![Aplicação SENAI DevHub com Spectra Design System em Mobile](docs/prints/app-mobile.png)
+![Aplicação DevHub com Spectra Design System em Mobile](docs/prints/app-mobile.png)
 
 ### 3. Código-Fonte (`index.html`)
 
