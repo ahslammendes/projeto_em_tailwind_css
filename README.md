@@ -6,6 +6,7 @@ Projeto acadêmico aplicando integralmente o **Spectra Design System** sobre **T
 
 ## Link da Aplicação em Funcionamento
 
+- **Deploy na Vercel:** configurado via [`vercel.json`](vercel.json) (`outputDirectory: "Frontend"`) — basta importar o repositório na Vercel para publicar automaticamente.
 - **Aplicação online (GitHub Pages):** https://ahslammendes.github.io/projeto_em_tailwind_css/Frontend/
 - **Repositório GitHub:** https://github.com/ahslammendes/projeto_em_tailwind_css
 
@@ -91,7 +92,7 @@ Abaixo estão documentadas **35 classes utilitárias distintas** efetivamente ut
 
 ```text
 projeto_em_tailwind_css/
-├── Frontend/
+├── Frontend/                           # Output Directory servido diretamente pela Vercel
 │   ├── index.html                      # Aplicação completa (Tailwind CSS v4 + Spectra Design System)
 │   └── assets/
 │       ├── img/                        # Imagens e avatares do Spectra Design System
@@ -104,15 +105,23 @@ projeto_em_tailwind_css/
 │       ├── app-desktop.png             # Print da aplicação em execução (Desktop)
 │       ├── app-mobile.png              # Print da aplicação em execução (Mobile)
 │       └── codigo-fonte.png            # Print do código-fonte HTML + Tailwind CSS
+├── vercel.json                         # Configuração de deploy estático na Vercel (outputDirectory: Frontend)
+├── .vercelignore                       # Ignora docs e arquivos auxiliares no upload para a Vercel
+├── .gitignore                          # Ignora pastas locais temporárias (.vercel, desingn_system)
 └── README.md                           # Documentação da entrega, prints e tabela de classes
 ```
 
 ---
 
-## Como Executar Localmente
+## Como Executar Localmente e Publicar na Vercel
 
+### Execução Local
 1. Clone o repositório:
    ```bash
    git clone https://github.com/ahslammendes/projeto_em_tailwind_css.git
    ```
 2. Acesse a pasta `Frontend/` e abra o arquivo `Frontend/index.html` diretamente no navegador (ou utilize a extensão *Live Server* no VS Code).
+
+### Deploy na Vercel
+1. Acesse https://vercel.com/new e importe o repositório `ahslammendes/projeto_em_tailwind_css`.
+2. Mantenha **Framework Preset** como **Other** e clique em **Deploy** — o arquivo `vercel.json` já aponta o `outputDirectory` para `Frontend` sem necessidade de etapa de build.
