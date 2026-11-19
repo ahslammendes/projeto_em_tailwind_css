@@ -6,7 +6,7 @@ Projeto acadêmico aplicando integralmente o **Spectra Design System** sobre **T
 
 ## Link da Aplicação em Funcionamento
 
-- **Aplicação online (GitHub Pages):** https://ahslammendes.github.io/projeto_em_tailwind_css/
+- **Aplicação online (GitHub Pages):** https://ahslammendes.github.io/projeto_em_tailwind_css/Frontend/
 - **Repositório GitHub:** https://github.com/ahslammendes/projeto_em_tailwind_css
 
 ---
@@ -45,7 +45,7 @@ Projeto acadêmico aplicando integralmente o **Spectra Design System** sobre **T
 
 ## Tabela de Classes Utilitárias Utilizadas (35 Classes)
 
-Abaixo estão documentadas **35 classes utilitárias distintas** efetivamente utilizadas no arquivo [`index.html`](index.html), cobrindo todas as 7 categorias exigidas:
+Abaixo estão documentadas **35 classes utilitárias distintas** efetivamente utilizadas no arquivo [`Frontend/index.html`](Frontend/index.html), cobrindo todas as 7 categorias exigidas:
 
 | # | Classe Utilitária | Categoria | Finalidade |
 | :-: | :--- | :--- | :--- |
@@ -91,17 +91,20 @@ Abaixo estão documentadas **35 classes utilitárias distintas** efetivamente ut
 
 ```text
 projeto_em_tailwind_css/
-├── index.html                  # Aplicação completa (Tailwind CSS v4 + Spectra Design System)
-├── README.md                   # Documentação da entrega, prints e tabela de classes
-├── assets/
-│   ├── img/                    # Imagens e avatares do Spectra Design System
-│   └── js/
-│       └── iconify-preload.js  # Preload dos ícones Lucide, Solar e Remix Icon
-└── docs/
-    └── prints/
-        ├── app-desktop.png     # Print da aplicação em execução (Desktop)
-        ├── app-mobile.png      # Print da aplicação em execução (Mobile)
-        └── codigo-fonte.png    # Print do código-fonte HTML + Tailwind CSS
+├── Frontend/
+│   ├── index.html                      # Aplicação completa (Tailwind CSS v4 + Spectra Design System)
+│   └── assets/
+│       ├── img/                        # Imagens e avatares do Spectra Design System
+│       └── js/
+│           ├── iconify-preload.js      # Preload dos ícones Lucide, Solar e Remix Icon
+│           ├── unicorn-scene.js        # Cena WebGL animada (Aurora + Voronoi + GlyphDither)
+│           └── unicornStudio.umd.js    # Runtime WebGL Unicorn Studio
+├── docs/
+│   └── prints/
+│       ├── app-desktop.png             # Print da aplicação em execução (Desktop)
+│       ├── app-mobile.png              # Print da aplicação em execução (Mobile)
+│       └── codigo-fonte.png            # Print do código-fonte HTML + Tailwind CSS
+└── README.md                           # Documentação da entrega, prints e tabela de classes
 ```
 
 ---
@@ -112,4 +115,4 @@ projeto_em_tailwind_css/
    ```bash
    git clone https://github.com/ahslammendes/projeto_em_tailwind_css.git
    ```
-2. Acesse a pasta do projeto e abra o arquivo `index.html` diretamente no navegador (ou utilize a extensão *Live Server* no VS Code).
+2. Acesse a pasta `Frontend/` e abra o arquivo `Frontend/index.html` diretamente no navegador (ou utilize a extensão *Live Server* no VS Code).
