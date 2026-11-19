@@ -3,487 +3,1888 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SENAI DevHub — Portal de Trilhas & Projetos com Tailwind CSS</title>
+    <title>SENAI DevHub — Spectra Design System com Tailwind CSS</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="assets/js/iconify-preload.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap"
       rel="stylesheet"
     />
     <style type="text/tailwindcss">
       @theme {
-        --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+        --color-forest-50: #f2f8f6;
+        --color-forest-100: #e1efe8;
+        --color-forest-200: #c3ddcf;
+        --color-forest-300: #96c3ad;
+        --color-forest-400: #62a386;
+        --color-forest-500: #3f8568;
+        --color-forest-600: #2f6a52;
+        --color-forest-700: #265543;
+        --color-forest-800: #224437;
+        --color-forest-900: #1d392f;
+        --color-forest-950: #0a1814;
+        --font-dm-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+      }
+    </style>
+    <style>
+      .font-dm-sans {
+        font-family: "DM Sans", sans-serif !important;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Spectra Scroll Reveal */
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+          transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        will-change: opacity, transform;
+      }
+      .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* Spectra Border Gradient Helper */
+      [style*="--border-gradient"]::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 1px;
+        border-radius: var(--border-radius-before, inherit);
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        background: var(--border-gradient);
+        pointer-events: none;
+      }
+      /* Spectra Dual-Row Marquee */
+      @keyframes scroll-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes scroll-right {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      .animate-scroll-left {
+        animation: scroll-left 40s linear infinite;
+      }
+      .animate-scroll-right {
+        animation: scroll-right 45s linear infinite;
+      }
+      .pause-on-hover:hover {
+        animation-play-state: paused;
+      }
+      .mask-gradient-x {
+        -webkit-mask-image: linear-gradient(
+          to right,
+          transparent,
+          black 12%,
+          black 88%,
+          transparent
+        );
+        mask-image: linear-gradient(
+          to right,
+          transparent,
+          black 12%,
+          black 88%,
+          transparent
+        );
       }
     </style>
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
-    <!-- Navbar -->
-    <header class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        <a href="#" class="flex items-center gap-3 group">
-          <div class="grid place-items-center w-10 h-10 rounded-xl bg-indigo-600 text-white font-extrabold shadow-lg shadow-indigo-600/30 group-hover:bg-indigo-500 transition-colors">
-            SD
-          </div>
-          <div class="flex flex-col">
-            <span class="text-base font-extrabold tracking-tight text-slate-100">SENAI DevHub</span>
-            <span class="text-xs text-indigo-400 font-medium">Tailwind CSS v4</span>
-          </div>
+
+  <body
+    class="min-h-screen antialiased bg-forest-50 text-forest-950 selection:bg-emerald-200 selection:text-emerald-900 overflow-x-hidden"
+  >
+    <!-- =========================================================
+         01. SPECTRA NAVBAR (mix-blend-difference -> black/95 on scroll)
+    ========================================================== -->
+    <header
+      id="main-header"
+      class="fixed top-0 left-0 right-0 z-50 w-full px-6 md:px-12 py-6 flex items-center justify-between text-white mix-blend-difference transition-all duration-300"
+    >
+      <a href="#" class="flex items-center gap-x-2.5 text-current cursor-pointer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          class="text-current w-[28px] h-[28px]"
+        >
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M6.237 4.712a.75.75 0 0 0-.474-1.423l-.555.185c-.57.19-1.055.351-1.439.527c-.409.187-.767.416-1.051.776c-.285.36-.426.76-.515 1.2c-.083.415-.129.923-.183 1.522l-.698 7.67a5 5 0 0 0-.072.823C1.255 18.611 3.38 20.75 6 20.75a4.75 4.75 0 0 0 4.689-3.986l.219-.078a3.25 3.25 0 0 1 2.184 0l.22.078A4.75 4.75 0 0 0 18 20.75c2.62 0 4.744-2.14 4.75-4.758q0-.421-.073-.823L21.98 7.5c-.054-.6-.1-1.107-.183-1.521c-.089-.441-.23-.842-.515-1.201s-.642-.59-1.051-.776c-.384-.176-.868-.337-1.439-.527l-.555-.185a.75.75 0 0 0-.474 1.423l.518.172c.617.206 1.024.343 1.326.481c.286.13.414.235.5.343c.085.107.157.256.219.564c.065.326.105.753.164 1.401l.415 4.569a4.75 4.75 0 0 0-7.585 2.942a4.75 4.75 0 0 0-2.64 0a4.75 4.75 0 0 0-7.585-2.942l.048-.532l.367-4.037c.059-.648.099-1.075.164-1.4c.062-.309.134-.458.22-.565c.085-.108.213-.212.499-.343c.302-.138.709-.275 1.326-.48zM21.19 15.376l.06.656a3.25 3.25 0 1 1-.06-.656m-18.38 0l-.06.656a3.25 3.25 0 1 0 .06-.656"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <span class="uppercase text-xl font-normal tracking-tight font-dm-sans">SENAI DevHub</span>
+      </a>
+
+      <nav class="hidden lg:flex text-white/80 uppercase text-sm font-medium gap-x-10 items-center">
+        <a href="#trilhas" class="hover:text-white transition-colors duration-200">Trilhas</a>
+        <a href="#arquitetura" class="hover:text-white transition-colors duration-200">Arquitetura</a>
+        <a href="#planos" class="hover:text-white transition-colors duration-200">Planos</a>
+        <a href="#faq" class="hover:text-white transition-colors duration-200">Docs &amp; FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-4 md:gap-8 text-xs font-medium tracking-wide text-white">
+        <a href="#comunidade" class="hidden sm:inline uppercase hover:text-white transition-colors text-white/70 font-sans">
+          Comunidade
         </a>
-
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
-          <a href="#trilhas" class="hover:text-indigo-400 transition-colors">Trilhas</a>
-          <a href="#metricas" class="hover:text-indigo-400 transition-colors">Progresso</a>
-          <a href="#inscricao" class="hover:text-indigo-400 transition-colors">Comunidade</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a
-            href="#inscricao"
-            class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold text-white transition-colors shadow-lg shadow-indigo-600/25"
-          >
-            Começar Agora
-          </a>
-          <button
-            id="mobile-menu-btn"
-            type="button"
-            aria-label="Abrir menu"
-            class="md:hidden grid place-items-center w-10 h-10 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-900 px-4 py-4">
-        <div class="flex flex-col gap-3 text-sm font-medium">
-          <a href="#trilhas" class="text-slate-200 hover:text-indigo-400 py-1">Trilhas</a>
-          <a href="#metricas" class="text-slate-200 hover:text-indigo-400 py-1">Progresso</a>
-          <a href="#inscricao" class="text-slate-200 hover:text-indigo-400 py-1">Comunidade</a>
-        </div>
+        <a
+          href="#inscricao"
+          class="hidden sm:inline-block hover:bg-neutral-900 transition-all uppercase text-[11px] font-semibold text-white tracking-wider font-sans bg-black border-white/10 border rounded-full py-2.5 px-6"
+        >
+          Inscrever-se
+        </a>
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Abrir menu"
+          class="lg:hidden grid place-items-center w-10 h-10 rounded-full border border-white/20 bg-black/40 text-white"
+        >
+          <iconify-icon icon="lucide:plus" width="18" stroke-width="1.5"></iconify-icon>
+        </button>
       </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-      <!-- Hero Section -->
-      <section class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-12 shadow-xl">
-        <div class="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-indigo-600/20 blur-3xl"></div>
-        <div class="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-cyan-500/10 blur-3xl"></div>
+    <!-- Mobile Navigation Drawer -->
+    <div
+      id="mobile-menu"
+      class="hidden fixed top-20 left-4 right-4 z-50 rounded-3xl bg-forest-950/95 backdrop-blur-2xl border border-white/10 p-6 text-white shadow-2xl lg:hidden"
+    >
+      <div class="flex flex-col gap-4 uppercase text-xs font-medium tracking-widest">
+        <a href="#trilhas" class="mobile-nav-link py-2 border-b border-white/10 hover:text-emerald-400">Trilhas</a>
+        <a href="#arquitetura" class="mobile-nav-link py-2 border-b border-white/10 hover:text-emerald-400">Arquitetura</a>
+        <a href="#planos" class="mobile-nav-link py-2 border-b border-white/10 hover:text-emerald-400">Planos</a>
+        <a href="#faq" class="mobile-nav-link py-2 border-b border-white/10 hover:text-emerald-400">Docs &amp; FAQ</a>
+        <a
+          href="#inscricao"
+          class="mobile-nav-link mt-2 text-center py-3 rounded-full bg-gradient-to-r from-[#d1fae5] to-[#34d399] text-emerald-950 font-semibold"
+        >
+          Inscrever-se
+        </a>
+      </div>
+    </div>
 
-        <div class="relative flex flex-col items-start gap-6 max-w-3xl">
-          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-xs font-semibold text-indigo-400">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Projeto Acadêmico • Faculdade SENAI
-          </span>
-
-          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-100 leading-tight">
-            Construa interfaces modernas com <span class="text-indigo-400">Tailwind CSS</span>
-          </h1>
-
-          <p class="text-base sm:text-lg text-slate-400 leading-relaxed">
-            Explore trilhas práticas de desenvolvimento Front-end, Back-end e UI Design em uma plataforma responsiva
-            construída inteiramente com classes utilitárias de cores, tipografia, dimensões, bordas, Flexbox e CSS Grid.
-          </p>
-
-          <div class="w-full flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-            <a
-              href="#trilhas"
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold text-white transition-all shadow-xl shadow-indigo-600/25"
-            >
-              Explorar Trilhas
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
-            <a
-              href="#metricas"
-              class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-700 bg-slate-950/60 hover:border-indigo-500/50 text-sm font-semibold text-slate-200 transition-colors"
-            >
-              Ver Painel de Métricas
-            </a>
-          </div>
+    <main>
+      <!-- =========================================================
+           02. HERO BAND (Light Forest Ground + Blurred Network + 12-Col Grid)
+      ========================================================== -->
+      <section class="relative min-h-screen overflow-hidden pt-28 pb-16 px-6 md:px-12 flex flex-col justify-between">
+        <!-- Hero Ambient Background -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+          <img
+            src="assets/img/hero-bg.webp"
+            alt="Rede de fundo Spectra"
+            class="object-bottom brightness-[0.6] saturate-[0.8] opacity-100 w-full h-full object-cover blur-xl"
+          />
+          <div class="bg-gradient-to-t from-forest-100/90 via-forest-50/50 to-forest-50/70 absolute inset-0 mix-blend-overlay"></div>
+          <div class="bg-gradient-to-b from-forest-50/90 via-transparent to-forest-950/40 absolute inset-0"></div>
         </div>
 
-        <!-- Stats Strip -->
-        <div class="relative mt-10 pt-8 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div class="flex flex-col gap-1">
-            <span class="text-2xl font-extrabold text-slate-100">35+</span>
-            <span class="text-sm text-slate-400">Classes utilitárias documentadas</span>
-          </div>
-          <div class="flex flex-col gap-1">
-            <span class="text-2xl font-extrabold text-indigo-400">100%</span>
-            <span class="text-sm text-slate-400">Layout responsivo Mobile-First</span>
-          </div>
-          <div class="flex flex-col gap-1">
-            <span class="text-2xl font-extrabold text-emerald-400">6 Trilhas</span>
-            <span class="text-sm text-slate-400">Projetos práticos com filtros ativos</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Trilhas / Cards Section -->
-      <section id="trilhas" class="mt-16">
-        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-8">
-          <div class="flex flex-col gap-2">
-            <span class="text-xs font-semibold uppercase tracking-widest text-indigo-400">Catálogo Interativo</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-100">Trilhas de Aprendizagem</h2>
-          </div>
-
-          <!-- Filter Buttons -->
-          <div id="filter-group" class="flex flex-wrap items-center gap-2">
-            <button data-filter="all" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-indigo-600 text-white transition-colors cursor-pointer">
-              Todas
-            </button>
-            <button data-filter="frontend" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-slate-800 bg-slate-900 text-slate-300 hover:border-indigo-500/50 transition-colors cursor-pointer">
-              Front-end
-            </button>
-            <button data-filter="backend" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-slate-800 bg-slate-900 text-slate-300 hover:border-indigo-500/50 transition-colors cursor-pointer">
-              Back-end
-            </button>
-            <button data-filter="design" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-slate-800 bg-slate-900 text-slate-300 hover:border-indigo-500/50 transition-colors cursor-pointer">
-              UI/UX
-            </button>
-          </div>
+        <!-- 12-Column Architectural Hairlines -->
+        <div
+          class="absolute inset-0 z-0 pointer-events-none grid grid-cols-12 gap-4 px-6 md:px-12 w-full max-w-[1600px] mx-auto opacity-[0.08]"
+        >
+          <div class="border-l border-forest-950 h-full col-start-1"></div>
+          <div class="border-l border-forest-950 h-full col-start-3 hidden md:block"></div>
+          <div class="border-l border-forest-950 h-full col-start-5 hidden md:block"></div>
+          <div class="border-l border-forest-950 h-full col-start-7 hidden md:block"></div>
+          <div class="border-l border-forest-950 h-full col-start-9 hidden md:block"></div>
+          <div class="border-l border-forest-950 h-full col-start-11 hidden md:block"></div>
+          <div class="border-r border-forest-950 h-full col-end-13"></div>
         </div>
 
-        <!-- Responsive Grid -->
-        <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Card 1 -->
-          <article data-category="frontend" class="course-card col-span-1 flex flex-col justify-between p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl hover:border-indigo-500/50 hover:-translate-y-1 transition-all duration-300">
-            <div>
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div class="grid place-items-center w-12 h-12 rounded-xl bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                  Front-end
-                </span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-100 mb-2">Tailwind CSS na Prática</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                Domine classes utilitárias, sistemas de design, temas customizados e layouts responsivos com velocidade.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-              <div class="flex items-center justify-between text-xs text-slate-400">
-                <span>Progresso da trilha</span>
-                <span class="font-semibold text-indigo-400">85%</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full w-[85%] rounded-full bg-indigo-500"></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 2 -->
-          <article data-category="frontend" class="course-card col-span-1 flex flex-col justify-between p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300">
-            <div>
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div class="grid place-items-center w-12 h-12 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/20">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                  </svg>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                  Front-end
-                </span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-100 mb-2">CSS Grid & Flexbox Avançado</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                Estruture dashboards complexos, galerias fluidas e componentes alinhados com precisão em qualquer tela.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-              <div class="flex items-center justify-between text-xs text-slate-400">
-                <span>Progresso da trilha</span>
-                <span class="font-semibold text-cyan-400">70%</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full w-[70%] rounded-full bg-cyan-500"></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 3 -->
-          <article data-category="backend" class="course-card col-span-1 flex flex-col justify-between p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300">
-            <div>
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div class="grid place-items-center w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
-                  </svg>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Back-end
-                </span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-100 mb-2">APIs REST com Node.js</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                Crie serviços escaláveis, autenticação segura com JWT e integração com bancos relacionais modernos.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-              <div class="flex items-center justify-between text-xs text-slate-400">
-                <span>Progresso da trilha</span>
-                <span class="font-semibold text-emerald-400">60%</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full w-[60%] rounded-full bg-emerald-500"></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 4 -->
-          <article data-category="design" class="course-card col-span-1 flex flex-col justify-between p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl hover:border-amber-500/50 hover:-translate-y-1 transition-all duration-300">
-            <div>
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div class="grid place-items-center w-12 h-12 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/20">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                  </svg>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                  UI/UX
-                </span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-100 mb-2">Design Systems & Acessibilidade</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                Padronize tokens de cor, contraste WCAG, hierarquia tipográfica e microinterações consistentes.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-              <div class="flex items-center justify-between text-xs text-slate-400">
-                <span>Progresso da trilha</span>
-                <span class="font-semibold text-amber-400">92%</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full w-[92%] rounded-full bg-amber-500"></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 5 -->
-          <article data-category="backend" class="course-card col-span-1 flex flex-col justify-between p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl hover:border-rose-500/50 hover:-translate-y-1 transition-all duration-300">
-            <div>
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div class="grid place-items-center w-12 h-12 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/20">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
-                  </svg>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                  Back-end
-                </span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-100 mb-2">Modelagem de Banco de Dados</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                Normalize tabelas, otimize consultas SQL e aplique índices estratégicos para alta performance.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-              <div class="flex items-center justify-between text-xs text-slate-400">
-                <span>Progresso da trilha</span>
-                <span class="font-semibold text-rose-400">45%</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full w-[45%] rounded-full bg-rose-500"></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 6 -->
-          <article data-category="design" class="course-card col-span-1 flex flex-col justify-between p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl hover:border-violet-500/50 hover:-translate-y-1 transition-all duration-300">
-            <div>
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div class="grid place-items-center w-12 h-12 rounded-xl bg-violet-500/15 text-violet-400 border border-violet-500/20">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                  UI/UX
-                </span>
-              </div>
-              <h3 class="text-lg font-bold text-slate-100 mb-2">Prototipação Mobile-First</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                Projete fluxos de navegação otimizados para smartphones antes de escalar para tablets e desktops.
-              </p>
-            </div>
-            <div class="pt-4 border-t border-slate-800 flex flex-col gap-3">
-              <div class="flex items-center justify-between text-xs text-slate-400">
-                <span>Progresso da trilha</span>
-                <span class="font-semibold text-violet-400">78%</span>
-              </div>
-              <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full w-[78%] rounded-full bg-violet-500"></div>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- Bento Grid Metrics Section -->
-      <section id="metricas" class="mt-16">
-        <div class="flex flex-col gap-2 mb-8">
-          <span class="text-xs font-semibold uppercase tracking-widest text-indigo-400">Painel de Desempenho</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-100">Arquitetura em Bento Grid</h2>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- Featured Wide Card -->
-          <div class="col-span-1 lg:col-span-2 p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl flex flex-col justify-between gap-6">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h3 class="text-xl font-bold text-slate-100">Horas de Estudo na Semana</h3>
-                <p class="text-sm text-slate-400">Distribuição prática por dia utilizando Flexbox e utilitários de altura</p>
-              </div>
-              <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                +18% esta semana
+        <!-- Hero Main Grid -->
+        <div class="relative z-10 max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-6">
+          <!-- Left Display Typography & CTAs -->
+          <div class="col-span-1 lg:col-span-7 flex flex-col items-start">
+            <div class="flex items-center gap-3 mb-6 opacity-80">
+              <span class="text-xs font-mono font-bold tracking-widest text-emerald-700 bg-emerald-100/50 px-2 py-0.5 rounded">
+                01
+              </span>
+              <div class="h-px w-8 bg-forest-900/30"></div>
+              <span class="text-xs font-medium uppercase tracking-widest text-forest-900 font-sans">
+                Faculdade SENAI • Spectra DS
               </span>
             </div>
 
-            <!-- Bar Chart built purely with Tailwind utilities -->
-            <div class="grid grid-cols-7 items-end gap-3 h-44 pt-4">
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[55%] rounded-t-lg bg-indigo-600/40 hover:bg-indigo-500 transition-colors"></div>
-                <span class="text-xs text-slate-400">Seg</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[75%] rounded-t-lg bg-indigo-600/60 hover:bg-indigo-500 transition-colors"></div>
-                <span class="text-xs text-slate-400">Ter</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[65%] rounded-t-lg bg-indigo-600/50 hover:bg-indigo-500 transition-colors"></div>
-                <span class="text-xs text-slate-400">Qua</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[95%] rounded-t-lg bg-indigo-600 hover:bg-indigo-400 transition-colors shadow-lg shadow-indigo-600/30"></div>
-                <span class="text-xs font-semibold text-indigo-400">Qui</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[80%] rounded-t-lg bg-indigo-600/70 hover:bg-indigo-500 transition-colors"></div>
-                <span class="text-xs text-slate-400">Sex</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[45%] rounded-t-lg bg-indigo-600/35 hover:bg-indigo-500 transition-colors"></div>
-                <span class="text-xs text-slate-400">Sáb</span>
-              </div>
-              <div class="flex flex-col items-center gap-2 h-full justify-end">
-                <div class="w-full h-[35%] rounded-t-lg bg-indigo-600/25 hover:bg-indigo-500 transition-colors"></div>
-                <span class="text-xs text-slate-400">Dom</span>
-              </div>
+            <h1 class="leading-[0.9] text-forest-950 text-4xl sm:text-5xl md:text-7xl xl:text-8xl tracking-tighter mix-blend-darken mb-6">
+              <span class="block tracking-tighter font-dm-sans font-light">SENAI</span>
+              <span class="block md:ml-4 ml-2 tracking-tighter text-forest-800 font-dm-sans font-light">DEVHUB</span>
+              <span class="block tracking-tighter font-dm-sans font-light">TAILWIND</span>
+            </h1>
+
+            <p class="text-base md:text-lg font-normal text-forest-800/80 tracking-wide leading-relaxed max-w-xl mb-8 font-sans">
+              Plataforma acadêmica de trilhas práticas de Engenharia de Software e UI Design, estilizada com o
+              <strong>Spectra Design System</strong> e mais de 35 classes utilitárias do Tailwind CSS v4.
+            </p>
+
+            <!-- Hero Action Buttons (Primary Emerald Gradient + Secondary Border-Gradient Glass) -->
+            <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-4 w-full sm:w-auto">
+              <a
+                href="#trilhas"
+                class="group shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 overflow-hidden font-medium text-emerald-950 bg-gradient-to-r from-[#d1fae5] to-[#34d399] rounded-full py-4 px-8 relative shadow-lg text-center"
+                style="
+                  box-shadow:
+                    0 15px 33px -12px rgba(16, 185, 129, 0.9),
+                    inset 0 4px 6.3px rgba(209, 250, 229, 1),
+                    inset 0 -5px 6.3px rgba(5, 150, 105, 1);
+                "
+              >
+                <div
+                  class="group-hover:translate-y-0 transition-transform duration-300 bg-white/20 absolute inset-0 translate-y-full"
+                ></div>
+                <span class="relative flex items-center justify-center gap-2 font-sans text-sm">
+                  Explorar Trilhas
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4"
+                  >
+                    <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+                    <path d="m21.854 2.147-10.94 10.939"></path>
+                  </svg>
+                </span>
+              </a>
+
+              <a
+                href="#arquitetura"
+                class="hover:bg-emerald-50 hover:text-emerald-700 transition-all flex justify-center text-sm font-medium text-emerald-700 bg-white/60 backdrop-blur-md rounded-full py-3.5 px-6 gap-2 items-center relative"
+                style="
+                  box-shadow:
+                    0 18px 35px rgba(6, 78, 59, 0.18),
+                    0 0 0 1px rgba(16, 185, 129, 0.2);
+                  color: #065f46;
+                  --border-gradient: linear-gradient(
+                    180deg,
+                    rgba(255, 255, 255, 0.85),
+                    rgba(16, 185, 129, 0.25),
+                    rgba(255, 255, 255, 0.85)
+                  );
+                  --border-radius-before: 9999px;
+                "
+              >
+                <span class="text-sm font-medium text-emerald-900/80 tracking-tight font-sans">Ver Componentes</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-4 h-4"
+                >
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </a>
             </div>
           </div>
 
-          <!-- Checklist Card -->
-          <div class="col-span-1 p-6 rounded-2xl border border-slate-800 bg-slate-900 shadow-xl flex flex-col justify-between gap-6">
-            <div>
-              <h3 class="text-xl font-bold text-slate-100 mb-2">Pilares do Projeto</h3>
-              <p class="text-sm text-slate-400 leading-relaxed mb-5">
-                Categorias de utilitários Tailwind CSS aplicadas nesta interface:
-              </p>
-              <ul class="flex flex-col gap-3 text-sm">
-                <li class="flex items-center gap-3 text-slate-200">
-                  <span class="grid place-items-center w-6 h-6 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">✓</span>
-                  Cores & Contraste
-                </li>
-                <li class="flex items-center gap-3 text-slate-200">
-                  <span class="grid place-items-center w-6 h-6 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">✓</span>
-                  Tipografia & Hierarquia
-                </li>
-                <li class="flex items-center gap-3 text-slate-200">
-                  <span class="grid place-items-center w-6 h-6 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">✓</span>
-                  Dimensões & Espaçamento
-                </li>
-                <li class="flex items-center gap-3 text-slate-200">
-                  <span class="grid place-items-center w-6 h-6 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">✓</span>
-                  Bordas, Raios & Sombras
-                </li>
-                <li class="flex items-center gap-3 text-slate-200">
-                  <span class="grid place-items-center w-6 h-6 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">✓</span>
-                  Flexbox, CSS Grid & Responsividade
-                </li>
-              </ul>
+          <!-- Right: Spectra Hero Preview Card (Light Glass + Hotspot + Connected Pill) -->
+          <div class="col-span-1 lg:col-span-5">
+            <div
+              class="relative w-full bg-white/60 backdrop-blur-md rounded-[2rem] shadow-2xl shadow-forest-900/5 p-4 md:p-6 overflow-hidden transform transition-transform hover:scale-[1.01] duration-700 border border-white/40"
+            >
+              <div class="flex flex-wrap items-center justify-between gap-4 mb-4 px-1">
+                <div class="flex gap-2">
+                  <div class="w-8 h-8 rounded-full bg-forest-50 border border-forest-100 grid place-items-center text-forest-600">
+                    <iconify-icon icon="lucide:wifi" width="16"></iconify-icon>
+                  </div>
+                  <div class="w-8 h-8 rounded-full bg-forest-50 border border-forest-100 grid place-items-center text-forest-600">
+                    <iconify-icon icon="lucide:battery-medium" width="16"></iconify-icon>
+                  </div>
+                </div>
+                <span class="text-xs font-mono font-bold text-forest-400 bg-forest-50 px-2.5 py-1 rounded">
+                  02 // TAILWIND v4 ACTIVE
+                </span>
+              </div>
+
+              <div class="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden group">
+                <img
+                  src="assets/img/hero-preview.webp"
+                  alt="Ambiente Espacial SENAI DevHub"
+                  class="transform group-hover:scale-105 transition-transform duration-700 contrast-[1.1] brightness-[0.9] w-full h-full object-cover"
+                />
+
+                <!-- Interactive Hotspot with Ping Halo -->
+                <div class="absolute top-1/3 right-1/4 w-8 h-8 flex items-center justify-center cursor-pointer group/dot">
+                  <div class="w-2.5 h-2.5 bg-white rounded-full shadow-lg z-10"></div>
+                  <div class="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                  <div
+                    class="absolute right-4 top-4 bg-white/95 backdrop-blur px-3 py-2 rounded-lg text-[10px] text-forest-900 font-medium opacity-0 group-hover/dot:opacity-100 transition-opacity whitespace-nowrap shadow-lg border border-forest-100"
+                  >
+                    <div class="flex items-center gap-2 font-sans">
+                      <iconify-icon icon="lucide:cpu" width="12"></iconify-icon>
+                      Engine Tailwind CSS v4
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Live Connected Pill -->
+                <div
+                  class="absolute bottom-4 right-4 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2"
+                >
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span class="text-[10px] font-medium text-white uppercase tracking-wider font-sans">Conectado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Footer: Spectra Dark Glass Cards -->
+        <div class="relative z-10 max-w-6xl mx-auto w-full mt-12 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+          <!-- Feature Dark Glass Card -->
+          <div class="col-span-1 lg:col-span-5">
+            <a
+              href="#trilhas"
+              class="bg-forest-950/80 backdrop-blur-2xl text-white rounded-[2rem] p-6 md:p-8 flex items-center justify-between shadow-xl shadow-forest-950/20 border border-white/10 relative overflow-hidden group hover:-translate-y-1 transition-all duration-300"
+            >
+              <div class="relative z-10 max-w-[65%]">
+                <div class="flex items-center gap-2 mb-3 opacity-60">
+                  <span class="text-[10px] font-mono">03</span>
+                  <div class="h-px w-4 bg-white/30"></div>
+                </div>
+                <h3 class="text-xl md:text-2xl leading-snug mb-2 tracking-tight font-dm-sans font-light">
+                  Design System Completo.
+                </h3>
+                <p class="text-xs text-forest-300 mb-6 font-light font-sans">
+                  Paleta Forest, superfícies em vidro fosco e microinterações fluidas.
+                </p>
+                <div
+                  class="w-8 h-8 rounded-full border border-white/20 bg-white/5 flex items-center justify-center group-hover:bg-emerald-500/20 group-hover:border-emerald-500/50 group-hover:text-emerald-400 transition-colors"
+                >
+                  <iconify-icon icon="lucide:arrow-up-right" width="16" stroke-width="1.5"></iconify-icon>
+                </div>
+              </div>
+              <div class="absolute right-[-18px] bottom-[-18px] w-36 h-36">
+                <img
+                  src="assets/img/glass-corner.webp"
+                  class="grayscale-[0.2] contrast-150 opacity-60 w-full h-full object-cover border-white/5 border-4 rounded-tl-[2rem]"
+                  alt="Interface Preview"
+                />
+              </div>
+            </a>
+          </div>
+
+          <!-- Stat Dark Glass Card -->
+          <div class="col-span-1 lg:col-span-7">
+            <div
+              class="bg-forest-950/80 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-xl shadow-forest-950/20 flex flex-col md:flex-row items-start md:items-end justify-between gap-6 h-full group hover:border-emerald-500/20 transition-colors duration-300"
+            >
+              <div class="flex flex-col gap-3">
+                <div class="flex -space-x-3">
+                  <img
+                    class="w-10 h-10 rounded-full border-2 border-forest-950 object-cover"
+                    src="assets/img/avatar-1.jpg"
+                    alt="Aluno 1"
+                  />
+                  <img
+                    class="w-10 h-10 rounded-full border-2 border-forest-950 object-cover"
+                    src="assets/img/avatar-2.jpg"
+                    alt="Aluno 2"
+                  />
+                  <div
+                    class="w-10 h-10 rounded-full border-2 border-forest-950 bg-forest-800 flex items-center justify-center text-[10px] font-bold text-white font-mono"
+                  >
+                    v4
+                  </div>
+                </div>
+                <div>
+                  <span class="block text-4xl text-white drop-shadow-sm tracking-tight font-dm-sans font-light">
+                    35<span class="text-2xl text-forest-400 font-dm-sans font-light">+</span>
+                  </span>
+                  <span class="text-xs text-forest-400 font-medium tracking-wide uppercase font-sans">
+                    Classes Utilitárias
+                  </span>
+                </div>
+              </div>
+              <div class="max-w-xs md:text-right">
+                <p class="text-lg md:text-xl font-medium text-white leading-snug tracking-tight font-sans">
+                  ARQUITETURA FLUIDA <span class="text-forest-400">MOBILE-FIRST</span>
+                </p>
+                <a
+                  href="#faq"
+                  class="inline-block mt-4 text-xs font-bold text-forest-200 border-b border-white/20 pb-0.5 hover:border-emerald-400 hover:text-emerald-400 transition-colors uppercase tracking-widest font-sans"
+                >
+                  Ler Documentação
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- CTA / Newsletter Section -->
-      <section id="inscricao" class="mt-16 rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-10 shadow-xl">
-        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-          <div class="max-w-xl flex flex-col gap-2">
-            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-100">
-              Receba desafios semanais de Front-end
-            </h2>
-            <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
-              Cadastre seu e-mail para receber novos componentes, layouts responsivos e boas práticas com Tailwind CSS.
-            </p>
+      <!-- =========================================================
+           03. DARK BAND — TRILHAS INTERATIVAS (Process Cards + Toggle Well)
+      ========================================================== -->
+      <section id="trilhas" class="bg-forest-950 relative overflow-hidden py-24 px-6 md:px-12 text-white">
+        <!-- 12-Col Hairlines on Dark -->
+        <div
+          class="absolute inset-0 z-0 pointer-events-none grid grid-cols-12 gap-4 px-6 md:px-12 w-full max-w-[1600px] mx-auto opacity-[0.05]"
+        >
+          <div class="border-l border-white h-full col-start-1"></div>
+          <div class="border-l border-white h-full col-start-3 hidden md:block"></div>
+          <div class="border-l border-white h-full col-start-5 hidden md:block"></div>
+          <div class="border-l border-white h-full col-start-7 hidden md:block"></div>
+          <div class="border-l border-white h-full col-start-9 hidden md:block"></div>
+          <div class="border-l border-white h-full col-start-11 hidden md:block"></div>
+          <div class="border-r border-white h-full col-end-13"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto">
+          <!-- Section Header + Spectra Toggle Well -->
+          <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 mb-14 reveal-on-scroll">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <span class="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded">
+                  02
+                </span>
+                <div class="h-px w-8 bg-forest-600"></div>
+                <span class="text-xs font-medium uppercase tracking-widest text-forest-400 font-sans">
+                  Catálogo Interativo
+                </span>
+              </div>
+              <h2 class="text-4xl md:text-5xl text-forest-50 leading-tight tracking-tighter font-dm-sans font-light">
+                Trilhas de <span class="text-emerald-400 font-dm-sans font-light">Aprendizagem</span>
+              </h2>
+            </div>
+
+            <!-- Spectra Toggle Well for Category Filter -->
+            <div
+              id="filter-group"
+              class="flex flex-wrap items-center p-1.5 bg-forest-900/50 backdrop-blur-sm rounded-full border border-white/10 gap-1"
+            >
+              <button
+                data-filter="all"
+                class="filter-btn px-5 py-2 rounded-full bg-forest-800 text-white shadow-lg border border-white/5 text-xs font-medium tracking-wide transition-all cursor-pointer"
+              >
+                Todas
+              </button>
+              <button
+                data-filter="frontend"
+                class="filter-btn px-5 py-2 rounded-full text-forest-400 hover:text-white text-xs font-medium tracking-wide transition-all cursor-pointer"
+              >
+                Front-end
+              </button>
+              <button
+                data-filter="backend"
+                class="filter-btn px-5 py-2 rounded-full text-forest-400 hover:text-white text-xs font-medium tracking-wide transition-all cursor-pointer"
+              >
+                Back-end
+              </button>
+              <button
+                data-filter="design"
+                class="filter-btn px-5 py-2 rounded-full text-forest-400 hover:text-white text-xs font-medium tracking-wide transition-all cursor-pointer"
+              >
+                UI/UX
+              </button>
+            </div>
           </div>
 
-          <form id="newsletter-form" class="w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <!-- Spectra Process Cards Grid (1 -> 2 -> 3 Columns) -->
+          <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <article
+              data-category="frontend"
+              class="course-card col-span-1 group p-6 md:p-8 bg-forest-900/20 rounded-3xl border border-white/5 hover:border-emerald-500/30 hover:bg-forest-900/40 transition-all duration-500 flex flex-col justify-between reveal-on-scroll delay-100"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <div
+                    class="w-12 h-12 bg-white/5 rounded-full grid place-items-center group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-forest-200"
+                  >
+                    <iconify-icon icon="lucide:scan" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                  <span
+                    class="text-[10px] font-medium text-emerald-400 uppercase tracking-widest border border-emerald-500/20 px-2.5 py-0.5 rounded-md bg-emerald-500/5"
+                  >
+                    Front-end
+                  </span>
+                </div>
+                <h3 class="text-xl text-forest-100 mb-3 font-semibold tracking-tight font-dm-sans">
+                  Tailwind CSS na Prática
+                </h3>
+                <p class="text-sm text-forest-400 leading-relaxed mb-6 font-sans">
+                  Domine classes utilitárias, tokens `@theme`, superfícies glassmorphism e layouts responsivos com agilidade.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-forest-400 font-mono mb-2">
+                  <span>Progresso</span>
+                  <span class="text-emerald-400">85%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-5">
+                  <div class="h-full w-[85%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
+                </div>
+                <div class="w-full h-px bg-white/5"></div>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-xs font-bold uppercase tracking-widest text-forest-500 group-hover:text-emerald-400 transition-colors font-mono">
+                    Fase 01
+                  </span>
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    class="text-forest-700 group-hover:text-emerald-400 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                    width="16"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article
+              data-category="frontend"
+              class="course-card col-span-1 group p-6 md:p-8 bg-forest-900/20 rounded-3xl border border-white/5 hover:border-emerald-500/30 hover:bg-forest-900/40 transition-all duration-500 flex flex-col justify-between reveal-on-scroll delay-200"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <div
+                    class="w-12 h-12 bg-white/5 rounded-full grid place-items-center group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-forest-200"
+                  >
+                    <iconify-icon icon="lucide:monitor" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                  <span
+                    class="text-[10px] font-medium text-emerald-400 uppercase tracking-widest border border-emerald-500/20 px-2.5 py-0.5 rounded-md bg-emerald-500/5"
+                  >
+                    Front-end
+                  </span>
+                </div>
+                <h3 class="text-xl text-forest-100 mb-3 font-semibold tracking-tight font-dm-sans">
+                  CSS Grid &amp; Flexbox Avançado
+                </h3>
+                <p class="text-sm text-forest-400 leading-relaxed mb-6 font-sans">
+                  Estruture dashboards complexos, galerias fluidas e grades arquiteturais de 12 colunas em qualquer tela.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-forest-400 font-mono mb-2">
+                  <span>Progresso</span>
+                  <span class="text-emerald-400">72%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-5">
+                  <div class="h-full w-[72%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
+                </div>
+                <div class="w-full h-px bg-white/5"></div>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-xs font-bold uppercase tracking-widest text-forest-500 group-hover:text-emerald-400 transition-colors font-mono">
+                    Fase 02
+                  </span>
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    class="text-forest-700 group-hover:text-emerald-400 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                    width="16"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article
+              data-category="backend"
+              class="course-card col-span-1 group p-6 md:p-8 bg-forest-900/20 rounded-3xl border border-white/5 hover:border-emerald-500/30 hover:bg-forest-900/40 transition-all duration-500 flex flex-col justify-between reveal-on-scroll delay-300"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <div
+                    class="w-12 h-12 bg-white/5 rounded-full grid place-items-center group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-forest-200"
+                  >
+                    <iconify-icon icon="lucide:cpu" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                  <span
+                    class="text-[10px] font-medium text-emerald-300 uppercase tracking-widest border border-emerald-400/20 px-2.5 py-0.5 rounded-md bg-emerald-400/10"
+                  >
+                    Back-end
+                  </span>
+                </div>
+                <h3 class="text-xl text-forest-100 mb-3 font-semibold tracking-tight font-dm-sans">
+                  APIs REST com Node.js
+                </h3>
+                <p class="text-sm text-forest-400 leading-relaxed mb-6 font-sans">
+                  Construa serviços escaláveis, autenticação JWT segura e integração com bancos relacionais modernos.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-forest-400 font-mono mb-2">
+                  <span>Progresso</span>
+                  <span class="text-emerald-400">60%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-5">
+                  <div class="h-full w-[60%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
+                </div>
+                <div class="w-full h-px bg-white/5"></div>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-xs font-bold uppercase tracking-widest text-forest-500 group-hover:text-emerald-400 transition-colors font-mono">
+                    Fase 03
+                  </span>
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    class="text-forest-700 group-hover:text-emerald-400 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                    width="16"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article
+              data-category="design"
+              class="course-card col-span-1 group p-6 md:p-8 bg-forest-900/20 rounded-3xl border border-white/5 hover:border-emerald-500/30 hover:bg-forest-900/40 transition-all duration-500 flex flex-col justify-between reveal-on-scroll delay-100"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <div
+                    class="w-12 h-12 bg-white/5 rounded-full grid place-items-center group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-forest-200"
+                  >
+                    <iconify-icon icon="lucide:eye" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                  <span
+                    class="text-[10px] font-medium text-emerald-400 uppercase tracking-widest border border-emerald-500/20 px-2.5 py-0.5 rounded-md bg-emerald-500/5"
+                  >
+                    UI/UX
+                  </span>
+                </div>
+                <h3 class="text-xl text-forest-100 mb-3 font-semibold tracking-tight font-dm-sans">
+                  Design Systems &amp; Tokens
+                </h3>
+                <p class="text-sm text-forest-400 leading-relaxed mb-6 font-sans">
+                  Padronize escalas de cor, contraste WCAG, hierarquia tipográfica DM Sans e componentes reutilizáveis.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-forest-400 font-mono mb-2">
+                  <span>Progresso</span>
+                  <span class="text-emerald-400">92%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-5">
+                  <div class="h-full w-[92%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
+                </div>
+                <div class="w-full h-px bg-white/5"></div>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-xs font-bold uppercase tracking-widest text-forest-500 group-hover:text-emerald-400 transition-colors font-mono">
+                    Fase 04
+                  </span>
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    class="text-forest-700 group-hover:text-emerald-400 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                    width="16"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 5 -->
+            <article
+              data-category="backend"
+              class="course-card col-span-1 group p-6 md:p-8 bg-forest-900/20 rounded-3xl border border-white/5 hover:border-emerald-500/30 hover:bg-forest-900/40 transition-all duration-500 flex flex-col justify-between reveal-on-scroll delay-200"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <div
+                    class="w-12 h-12 bg-white/5 rounded-full grid place-items-center group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-forest-200"
+                  >
+                    <iconify-icon icon="solar:layers-linear" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                  <span
+                    class="text-[10px] font-medium text-emerald-300 uppercase tracking-widest border border-emerald-400/20 px-2.5 py-0.5 rounded-md bg-emerald-400/10"
+                  >
+                    Back-end
+                  </span>
+                </div>
+                <h3 class="text-xl text-forest-100 mb-3 font-semibold tracking-tight font-dm-sans">
+                  Modelagem de Dados SQL
+                </h3>
+                <p class="text-sm text-forest-400 leading-relaxed mb-6 font-sans">
+                  Normalize entidades, otimize consultas complexas e estruture índices para aplicações de alta demanda.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-forest-400 font-mono mb-2">
+                  <span>Progresso</span>
+                  <span class="text-emerald-400">48%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-5">
+                  <div class="h-full w-[48%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
+                </div>
+                <div class="w-full h-px bg-white/5"></div>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-xs font-bold uppercase tracking-widest text-forest-500 group-hover:text-emerald-400 transition-colors font-mono">
+                    Fase 05
+                  </span>
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    class="text-forest-700 group-hover:text-emerald-400 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                    width="16"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 6 -->
+            <article
+              data-category="design"
+              class="course-card col-span-1 group p-6 md:p-8 bg-forest-900/20 rounded-3xl border border-white/5 hover:border-emerald-500/30 hover:bg-forest-900/40 transition-all duration-500 flex flex-col justify-between reveal-on-scroll delay-300"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <div
+                    class="w-12 h-12 bg-white/5 rounded-full grid place-items-center group-hover:bg-emerald-500/20 group-hover:text-emerald-400 transition-colors duration-300 text-forest-200"
+                  >
+                    <iconify-icon icon="solar:magic-stick-3-linear" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                  <span
+                    class="text-[10px] font-medium text-emerald-400 uppercase tracking-widest border border-emerald-500/20 px-2.5 py-0.5 rounded-md bg-emerald-500/5"
+                  >
+                    UI/UX
+                  </span>
+                </div>
+                <h3 class="text-xl text-forest-100 mb-3 font-semibold tracking-tight font-dm-sans">
+                  Motion &amp; Prototipação
+                </h3>
+                <p class="text-sm text-forest-400 leading-relaxed mb-6 font-sans">
+                  Crie transições cubic-bezier, animações scroll-reveal e fluxos mobile-first com feedback tátil.
+                </p>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-forest-400 font-mono mb-2">
+                  <span>Progresso</span>
+                  <span class="text-emerald-400">78%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-5">
+                  <div class="h-full w-[78%] rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
+                </div>
+                <div class="w-full h-px bg-white/5"></div>
+                <div class="mt-4 flex justify-between items-center">
+                  <span class="text-xs font-bold uppercase tracking-widest text-forest-500 group-hover:text-emerald-400 transition-colors font-mono">
+                    Fase 06
+                  </span>
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    class="text-forest-700 group-hover:text-emerald-400 transition-all opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
+                    width="16"
+                  ></iconify-icon>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           04. LIGHT BAND — APPLICATION CARDS + RAISED FEATURE PANEL + TELEMETRY
+      ========================================================== -->
+      <section id="arquitetura" class="bg-forest-50 py-24 px-6 md:px-12">
+        <div class="max-w-6xl mx-auto">
+          <!-- Section Header -->
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal-on-scroll">
+            <div>
+              <div class="flex items-center gap-3 mb-4 opacity-80">
+                <span class="text-xs font-mono font-bold tracking-widest text-emerald-700 bg-emerald-100/50 px-2 py-0.5 rounded">
+                  03
+                </span>
+                <div class="h-px w-8 bg-forest-900/30"></div>
+                <span class="text-xs font-medium uppercase tracking-widest text-forest-900 font-sans">
+                  Aplicações &amp; Bento Grid
+                </span>
+              </div>
+              <h2 class="text-4xl md:text-5xl lg:text-6xl text-forest-950 tracking-tighter font-dm-sans font-normal leading-[0.95]">
+                Experiência <span class="text-emerald-600 font-dm-sans font-normal">Visual</span> em Camadas
+              </h2>
+            </div>
+            <a
+              href="#planos"
+              class="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-forest-950 hover:text-emerald-600 transition-colors font-sans"
+            >
+              Ver Planos de Estudo
+              <iconify-icon
+                icon="lucide:arrow-right"
+                class="group-hover:translate-x-1 transition-transform"
+                stroke-width="2"
+              ></iconify-icon>
+            </a>
+          </div>
+
+          <!-- Spectra Application Media Cards (8/4 Split Grid) -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-14">
+            <div
+              class="col-span-1 lg:col-span-8 group overflow-hidden cursor-pointer reveal-on-scroll delay-100 border-forest-900/5 h-[380px] lg:h-[460px] border rounded-3xl relative shadow-xl shadow-forest-900/5"
+            >
+              <img
+                src="assets/img/app-main.webp"
+                class="transition-transform duration-700 group-hover:scale-105 group-hover:saturate-100 w-full h-full object-cover saturate-0"
+                alt="Ambiente de Desenvolvimento"
+              />
+              <div
+                class="bg-gradient-to-t from-forest-950/90 via-forest-950/20 to-transparent opacity-90 absolute inset-0"
+              ></div>
+              <div class="absolute bottom-0 left-0 p-8 w-full">
+                <div class="flex justify-between items-end">
+                  <div>
+                    <span class="text-xs font-medium text-emerald-200 uppercase tracking-widest mb-2 block font-sans">
+                      Ambiente Imersivo
+                    </span>
+                    <h3 class="text-3xl text-white tracking-tighter font-dm-sans font-light">
+                      Laboratório Front-end
+                    </h3>
+                  </div>
+                  <div
+                    class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md grid place-items-center border border-white/20 group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all text-white"
+                  >
+                    <iconify-icon icon="lucide:monitor" width="24" stroke-width="1.5"></iconify-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-span-1 lg:col-span-4 flex flex-col gap-6">
+              <div
+                class="flex-1 relative group rounded-3xl overflow-hidden cursor-pointer h-[220px] reveal-on-scroll delay-200 border border-forest-900/5 shadow-xl shadow-forest-900/5"
+              >
+                <img
+                  src="assets/img/app-side-1.webp"
+                  class="transition-transform duration-700 group-hover:scale-105 w-full h-full object-cover"
+                  alt="Navegação Responsiva"
+                />
+                <div class="group-hover:bg-forest-950/10 transition-colors bg-forest-950/30 absolute inset-0"></div>
+                <div class="absolute bottom-6 left-6">
+                  <span class="text-[10px] font-medium text-white/90 uppercase tracking-widest block mb-1 font-sans">
+                    Breakpoints
+                  </span>
+                  <h3 class="text-xl font-medium text-white tracking-tight font-sans">Mobile-First Real</h3>
+                </div>
+              </div>
+
+              <div
+                class="flex-1 relative group rounded-3xl overflow-hidden cursor-pointer h-[220px] reveal-on-scroll delay-300 border border-forest-900/5 shadow-xl shadow-forest-900/5"
+              >
+                <img
+                  src="assets/img/app-side-2.webp"
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  alt="Design System"
+                />
+                <div class="absolute inset-0 bg-forest-950/30 group-hover:bg-forest-950/10 transition-colors"></div>
+                <div class="absolute bottom-6 left-6">
+                  <span class="text-[10px] font-medium text-white/90 uppercase tracking-widest block mb-1 font-sans">
+                    Performance
+                  </span>
+                  <h3 class="text-xl font-medium text-white tracking-tight font-sans">Zero CSS Redundante</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Raised White Feature Panel + Telemetry Overlay -->
+          <div
+            class="bg-white rounded-[2.5rem] shadow-2xl shadow-forest-900/5 border border-forest-900/5 p-6 md:p-12 reveal-on-scroll"
+          >
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+              <!-- Left: 4 Spectra Feature Items + Dark Solid CTA -->
+              <div class="col-span-1 lg:col-span-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 mb-10">
+                  <div>
+                    <div class="flex items-center gap-3 mb-3">
+                      <iconify-icon icon="solar:map-point-linear" class="text-emerald-600" width="24"></iconify-icon>
+                      <h3 class="text-xl font-semibold text-forest-950 tracking-tight font-dm-sans">Cores Forest</h3>
+                    </div>
+                    <p class="text-sm text-forest-500 font-sans leading-relaxed">
+                      Escala customizada de `forest-50` a `forest-950` combinada com acentos `emerald` de alto contraste.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="flex items-center gap-3 mb-3">
+                      <iconify-icon icon="solar:magic-stick-3-linear" class="text-emerald-600" width="24"></iconify-icon>
+                      <h3 class="text-xl font-semibold text-forest-950 tracking-tight font-dm-sans">Tipografia Dual</h3>
+                    </div>
+                    <p class="text-sm text-forest-500 font-sans leading-relaxed">
+                      Títulos em `DM Sans` leve com tracking negativo, corpo limpo em `font-sans` e chips em `font-mono`.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="flex items-center gap-3 mb-3">
+                      <iconify-icon icon="solar:graph-new-linear" class="text-emerald-600" width="24"></iconify-icon>
+                      <h3 class="text-xl font-semibold text-forest-950 tracking-tight font-dm-sans">Telemetria UI</h3>
+                    </div>
+                    <p class="text-sm text-forest-500 font-sans leading-relaxed">
+                      Indicadores de desempenho, barras semanais e overlays em vidro fosco com `backdrop-blur`.
+                    </p>
+                  </div>
+
+                  <div>
+                    <div class="flex items-center gap-3 mb-3">
+                      <iconify-icon icon="solar:layers-linear" class="text-emerald-600" width="24"></iconify-icon>
+                      <h3 class="text-xl font-semibold text-forest-950 tracking-tight font-dm-sans">Grid &amp; Flex</h3>
+                    </div>
+                    <p class="text-sm text-forest-500 font-sans leading-relaxed">
+                      Composição de painéis `lg:col-span-2`, grids 12 colunas e alinhamentos responsivos fluidos.
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href="#inscricao"
+                  class="inline-flex items-center gap-3 bg-forest-950 text-white px-8 py-4 rounded-xl font-medium hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-600/20 transition-all duration-300 font-sans group text-sm"
+                >
+                  Participar da Turma SENAI
+                  <iconify-icon
+                    icon="solar:arrow-right-linear"
+                    width="20"
+                    class="group-hover:translate-x-1 transition-transform"
+                  ></iconify-icon>
+                </a>
+              </div>
+
+              <!-- Right: Spectra Spatial Telemetry Overlay + Render Score Glass Card -->
+              <div class="col-span-1 lg:col-span-6">
+                <div class="relative w-full h-[420px] md:h-[460px] rounded-3xl overflow-hidden group shadow-2xl shadow-forest-900/10">
+                  <img
+                    src="assets/img/spatial-telemetry.webp"
+                    alt="Painel de Telemetria Spectra"
+                    class="transition-transform duration-1000 group-hover:scale-105 saturate-[0.8] group-hover:saturate-100 w-full h-full object-cover"
+                  />
+                  <div class="absolute inset-0 bg-forest-950/25 mix-blend-multiply pointer-events-none"></div>
+
+                  <!-- Floating Dark Glass Telemetry Pills -->
+                  <div class="absolute top-6 left-6 flex flex-col gap-2.5 z-10">
+                    <div
+                      class="bg-forest-950/90 backdrop-blur-md border border-white/10 px-4 py-2 rounded-lg text-xs font-medium text-white flex items-center justify-between gap-6 w-48 shadow-lg transform transition-all duration-500 hover:scale-105 cursor-default group/pill"
+                    >
+                      <span class="text-emerald-200/80 font-sans">Utilitários</span>
+                      <span class="font-mono tracking-wider group-hover/pill:text-emerald-400 transition-colors">35+</span>
+                    </div>
+                    <div
+                      class="bg-forest-950/90 backdrop-blur-md border border-white/10 px-4 py-2 rounded-lg text-xs font-medium text-white flex items-center justify-between gap-6 w-48 shadow-lg transform transition-all duration-500 hover:scale-105 cursor-default ml-3 group/pill"
+                    >
+                      <span class="text-emerald-200/80 font-sans">Latência UI</span>
+                      <span class="font-mono tracking-wider group-hover/pill:text-emerald-400 transition-colors">&lt; 2ms</span>
+                    </div>
+                    <div
+                      class="bg-forest-950/90 backdrop-blur-md border border-white/10 px-4 py-2 rounded-lg text-xs font-medium text-white flex items-center justify-between gap-6 w-48 shadow-lg transform transition-all duration-500 hover:scale-105 cursor-default ml-1.5 group/pill"
+                    >
+                      <span class="text-emerald-200/80 font-sans">Responsivo</span>
+                      <span class="font-mono tracking-wider group-hover/pill:text-emerald-400 transition-colors">100%</span>
+                    </div>
+                  </div>
+
+                  <!-- Frosted Render Score + Weekly Study Bars Glass Card -->
+                  <div
+                    class="absolute bottom-6 right-6 bg-white/10 backdrop-blur-xl border border-white/30 p-5 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.25)] w-64 z-10 overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/10 before:to-transparent before:pointer-events-none"
+                  >
+                    <div class="flex justify-between items-center mb-3 relative z-10">
+                      <h4 class="text-white font-medium font-sans tracking-wide text-sm">Horas / Semana</h4>
+                      <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                    </div>
+                    <div class="grid grid-cols-7 items-end gap-1.5 h-16 mb-3 relative z-10">
+                      <div class="h-[55%] rounded-t bg-emerald-400/50"></div>
+                      <div class="h-[75%] rounded-t bg-emerald-400/70"></div>
+                      <div class="h-[65%] rounded-t bg-emerald-400/60"></div>
+                      <div class="h-[95%] rounded-t bg-emerald-400"></div>
+                      <div class="h-[80%] rounded-t bg-emerald-400/75"></div>
+                      <div class="h-[50%] rounded-t bg-emerald-400/45"></div>
+                      <div class="h-[40%] rounded-t bg-emerald-400/35"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] uppercase tracking-widest font-semibold relative z-10">
+                      <span class="text-forest-100/80">Qualidade</span>
+                      <span class="text-emerald-300 bg-emerald-900/50 px-2 py-0.5 rounded border border-emerald-500/30">
+                        Optimal
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           05. DARK BAND — DUAL-ROW INFINITE MARQUEE TESTIMONIALS
+      ========================================================== -->
+      <section id="comunidade" class="bg-forest-950 relative overflow-hidden py-24 text-white border-t border-white/5">
+        <div class="max-w-6xl mx-auto px-6 md:px-12 mb-14 reveal-on-scroll">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded">
+              04
+            </span>
+            <div class="h-px w-8 bg-forest-600"></div>
+            <span class="text-xs font-medium uppercase tracking-widest text-forest-400 font-sans">
+              Comunidade SENAI
+            </span>
+          </div>
+          <h2 class="text-4xl md:text-5xl text-forest-50 leading-tight tracking-tighter font-dm-sans font-light">
+            Feedback da <span class="text-emerald-400">Comunidade</span>
+          </h2>
+        </div>
+
+        <!-- Marquee Track Wrapper with Edge Fade -->
+        <div class="relative overflow-hidden mask-gradient-x flex flex-col gap-6">
+          <!-- Row 1: Scroll Left -->
+          <div class="flex gap-6 w-max animate-scroll-left pause-on-hover">
+            <!-- Set 1 -->
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-1.jpg" alt="Lucas" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Lucas Almeida</h4>
+                    <span class="text-xs text-forest-400 font-mono">FRONT-END, SENAI</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:palette-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "A combinação de classes utilitárias com o sistema de cores Forest deixou o protótipo pronto em tempo recorde."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-2.jpg" alt="Mariana" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Mariana Costa</h4>
+                    <span class="text-xs text-forest-400 font-mono">UI DESIGN, SENAI</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:planet-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Os cartões em vidro fosco e a tipografia DM Sans elevaram completamente o padrão visual do nosso projeto."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-3.jpg" alt="Rafael" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Rafael Souza</h4>
+                    <span class="text-xs text-forest-400 font-mono">FULL-STACK, LAB</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:buildings-2-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Flexbox, CSS Grid e breakpoints responsivos integrados de forma limpa e fácil de manter."
+              </p>
+            </div>
+
+            <!-- Duplicate Set for Seamless Loop -->
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-1.jpg" alt="Lucas" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Lucas Almeida</h4>
+                    <span class="text-xs text-forest-400 font-mono">FRONT-END, SENAI</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:palette-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "A combinação de classes utilitárias com o sistema de cores Forest deixou o protótipo pronto em tempo recorde."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-2.jpg" alt="Mariana" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Mariana Costa</h4>
+                    <span class="text-xs text-forest-400 font-mono">UI DESIGN, SENAI</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:planet-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Os cartões em vidro fosco e a tipografia DM Sans elevaram completamente o padrão visual do nosso projeto."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-3.jpg" alt="Rafael" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Rafael Souza</h4>
+                    <span class="text-xs text-forest-400 font-mono">FULL-STACK, LAB</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:buildings-2-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Flexbox, CSS Grid e breakpoints responsivos integrados de forma limpa e fácil de manter."
+              </p>
+            </div>
+          </div>
+
+          <!-- Row 2: Scroll Right -->
+          <div class="flex gap-6 w-max animate-scroll-right pause-on-hover">
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-4.jpg" alt="Beatriz" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Beatriz Lima</h4>
+                    <span class="text-xs text-forest-400 font-mono">ENGENHARIA, SENAI</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:heart-pulse-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Animações sutis no scroll e feedback instantâneo nos filtros deixam a navegação muito natural."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-5.jpg" alt="Thiago" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Thiago Rocha</h4>
+                    <span class="text-xs text-forest-400 font-mono">DEV WEB, TURMA B</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:gamepad-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "A documentação das classes utilitárias no repositório facilita muito o estudo de toda a turma."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-6.jpg" alt="Camila" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Camila Nunes</h4>
+                    <span class="text-xs text-forest-400 font-mono">PRODUCT, LAB</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:wheel-angle-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Contraste impecável entre as bandas claras Forest-50 e as seções escuras Forest-950."
+              </p>
+            </div>
+
+            <!-- Duplicate Set -->
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-4.jpg" alt="Beatriz" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Beatriz Lima</h4>
+                    <span class="text-xs text-forest-400 font-mono">ENGENHARIA, SENAI</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:heart-pulse-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Animações sutis no scroll e feedback instantâneo nos filtros deixam a navegação muito natural."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-5.jpg" alt="Thiago" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Thiago Rocha</h4>
+                    <span class="text-xs text-forest-400 font-mono">DEV WEB, TURMA B</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:gamepad-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "A documentação das classes utilitárias no repositório facilita muito o estudo de toda a turma."
+              </p>
+            </div>
+
+            <div class="w-[340px] md:w-[460px] bg-forest-900/10 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:bg-forest-900/20 hover:border-emerald-500/20 transition-all duration-300 group">
+              <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center gap-4">
+                  <img src="assets/img/avatar-6.jpg" alt="Camila" class="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all object-cover" />
+                  <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider font-sans">Camila Nunes</h4>
+                    <span class="text-xs text-forest-400 font-mono">PRODUCT, LAB</span>
+                  </div>
+                </div>
+                <iconify-icon icon="solar:wheel-angle-linear" class="text-emerald-500/50 group-hover:text-emerald-400 transition-colors" width="32"></iconify-icon>
+              </div>
+              <p class="text-base md:text-lg text-forest-100 font-light uppercase leading-snug tracking-tight font-sans">
+                "Contraste impecável entre as bandas claras Forest-50 e as seções escuras Forest-950."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           06. DARK BAND — PLANOS DE ACESSO (Center Glow + Billing Toggle + Plan Cards)
+      ========================================================== -->
+      <section id="planos" class="bg-forest-950 relative overflow-hidden py-24 px-6 md:px-12 text-white">
+        <!-- Center Emerald Glow -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-900/20 blur-[120px] rounded-full pointer-events-none z-0"
+        ></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto">
+          <div class="text-center max-w-2xl mx-auto mb-12 reveal-on-scroll">
+            <div class="inline-flex items-center gap-3 mb-4">
+              <span class="text-xs font-mono font-bold tracking-widest text-emerald-400 bg-emerald-900/30 px-2 py-0.5 rounded">
+                05
+              </span>
+              <div class="h-px w-8 bg-forest-600"></div>
+              <span class="text-xs font-medium uppercase tracking-widest text-forest-400 font-sans">
+                Modalidades de Acesso
+              </span>
+            </div>
+            <h2 class="text-4xl md:text-5xl text-forest-50 leading-tight tracking-tighter font-dm-sans font-light mb-6">
+              Escolha sua <span class="text-emerald-400">Jornada</span>
+            </h2>
+
+            <!-- Interactive Spectra Billing Toggle -->
+            <div class="flex justify-center pt-2">
+              <div class="flex items-center p-1.5 bg-forest-900/50 backdrop-blur-sm rounded-full border border-white/10 relative">
+                <div class="relative z-10 grid grid-cols-2 gap-2">
+                  <button
+                    id="billing-monthly"
+                    type="button"
+                    class="px-7 py-2.5 rounded-full bg-forest-800 text-white shadow-lg border border-white/5 text-sm font-medium font-sans tracking-wide transition-all cursor-pointer"
+                  >
+                    Mensal
+                  </button>
+                  <button
+                    id="billing-annual"
+                    type="button"
+                    class="px-7 py-2.5 rounded-full text-forest-400 hover:text-white text-sm font-medium font-sans tracking-wide transition-all relative cursor-pointer"
+                  >
+                    Anual
+                    <span
+                      class="absolute -top-3 -right-3 text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-md font-mono"
+                    >
+                      -20%
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spectra 3-Column Plan Cards -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start pt-6">
+            <!-- Plan 01: Estudante -->
+            <div
+              class="col-span-1 relative bg-forest-900/20 backdrop-blur-md border border-white/5 rounded-[2rem] p-8 md:p-10 group hover:bg-forest-900/40 transition-all duration-500 reveal-on-scroll delay-100 flex flex-col h-full"
+            >
+              <div class="flex justify-between items-start mb-8">
+                <div
+                  class="w-12 h-12 rounded-2xl bg-forest-800/50 border border-white/5 grid place-items-center text-forest-300 group-hover:text-emerald-400 group-hover:border-emerald-500/30 transition-all duration-300"
+                >
+                  <iconify-icon icon="solar:user-linear" width="24" stroke-width="1.5"></iconify-icon>
+                </div>
+                <span class="text-xs font-mono font-bold text-forest-500 bg-white/5 px-2 py-1 rounded border border-white/5">
+                  01
+                </span>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-xs font-medium text-emerald-400 uppercase tracking-widest border border-emerald-500/20 px-2 py-0.5 rounded-md bg-emerald-500/5">
+                  Gratuito
+                </span>
+              </div>
+              <h3 class="text-3xl text-white font-dm-sans tracking-tight mb-4">Estudante</h3>
+              <div class="flex items-baseline gap-1 mb-6">
+                <span class="text-4xl lg:text-5xl font-light text-white font-dm-sans">R$ 0</span>
+                <span class="text-forest-400 font-sans text-sm">/ mês</span>
+              </div>
+              <p class="text-sm text-forest-300 mb-8 border-b border-white/5 pb-8 font-sans leading-relaxed">
+                Acesso aberto às trilhas fundamentais de HTML, CSS Grid, Flexbox e Tailwind CSS.
+              </p>
+
+              <ul class="space-y-4 mb-10 flex-1">
+                <li class="flex items-center gap-3 text-forest-200 text-sm font-sans">
+                  <iconify-icon icon="solar:check-circle-linear" class="text-emerald-500" width="18"></iconify-icon>
+                  6 trilhas práticas guiadas
+                </li>
+                <li class="flex items-center gap-3 text-forest-200 text-sm font-sans">
+                  <iconify-icon icon="solar:check-circle-linear" class="text-emerald-500" width="18"></iconify-icon>
+                  Componentes Tailwind v4
+                </li>
+                <li class="flex items-center gap-3 text-forest-200 text-sm font-sans">
+                  <iconify-icon icon="solar:check-circle-linear" class="text-emerald-500" width="18"></iconify-icon>
+                  Repositórios públicos no GitHub
+                </li>
+              </ul>
+
+              <a
+                href="#inscricao"
+                class="w-full py-4 rounded-xl border border-white/10 text-white font-medium hover:bg-white hover:text-forest-950 transition-all duration-300 font-sans text-sm text-center"
+              >
+                Começar Grátis
+              </a>
+            </div>
+
+            <!-- Plan 02: Featured Pro -->
+            <div
+              class="col-span-1 relative bg-gradient-to-b from-forest-900/80 to-forest-950/80 backdrop-blur-xl border border-emerald-500/30 rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-emerald-900/20 z-10 transform lg:-translate-y-6 group hover:border-emerald-400/50 transition-all duration-500 reveal-on-scroll delay-200 flex flex-col h-full"
+            >
+              <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-emerald-500 text-emerald-950 text-[10px] font-bold uppercase tracking-widest py-1.5 px-4 rounded-full shadow-lg shadow-emerald-500/20 font-sans whitespace-nowrap"
+              >
+                Mais Popular
+              </div>
+
+              <div class="flex justify-between items-start mb-8">
+                <div
+                  class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-900/20 border border-emerald-500/30 grid place-items-center text-emerald-400"
+                >
+                  <iconify-icon icon="solar:crown-star-linear" width="28" stroke-width="1.5"></iconify-icon>
+                </div>
+                <span class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
+                  02
+                </span>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-xs font-medium text-emerald-300 uppercase tracking-widest border border-emerald-400/20 px-2 py-0.5 rounded-md bg-emerald-400/10">
+                  Full-Stack Pro
+                </span>
+              </div>
+              <h3 class="text-3xl text-white font-dm-sans tracking-tight mb-4">DevHub Pro</h3>
+              <div class="flex items-baseline gap-1 mb-6">
+                <span id="pro-price" class="text-5xl lg:text-6xl font-light text-white font-dm-sans tracking-tighter">
+                  R$ 49
+                </span>
+                <span class="text-forest-400 font-sans text-sm">/ mês</span>
+              </div>
+              <p class="text-sm text-forest-300 mb-8 border-b border-white/10 pb-8 font-sans leading-relaxed">
+                Mentorias semanais, revisão de código, projetos reais e certificado SENAI DevHub.
+              </p>
+
+              <ul class="space-y-4 mb-10 flex-1">
+                <li class="flex items-center gap-3 text-white text-sm font-sans">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 grid place-items-center text-forest-950 text-xs shrink-0">
+                    <iconify-icon icon="solar:check-read-linear" stroke-width="2.5"></iconify-icon>
+                  </div>
+                  Tudo do plano Estudante
+                </li>
+                <li class="flex items-center gap-3 text-white text-sm font-sans">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 grid place-items-center text-forest-950 text-xs shrink-0">
+                    <iconify-icon icon="solar:check-read-linear" stroke-width="2.5"></iconify-icon>
+                  </div>
+                  Desafios semanais com code review
+                </li>
+                <li class="flex items-center gap-3 text-white text-sm font-sans">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 grid place-items-center text-forest-950 text-xs shrink-0">
+                    <iconify-icon icon="solar:check-read-linear" stroke-width="2.5"></iconify-icon>
+                  </div>
+                  Acesso ao Spectra Design System
+                </li>
+                <li class="flex items-center gap-3 text-white text-sm font-sans">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500 grid place-items-center text-forest-950 text-xs shrink-0">
+                    <iconify-icon icon="solar:check-read-linear" stroke-width="2.5"></iconify-icon>
+                  </div>
+                  Certificação de conclusão
+                </li>
+              </ul>
+
+              <a
+                href="#inscricao"
+                class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium hover:shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] transition-all duration-300 font-sans text-sm text-center"
+              >
+                <span class="inline-flex items-center justify-center gap-2">
+                  Assinar DevHub Pro
+                  <iconify-icon icon="solar:arrow-right-linear" width="18"></iconify-icon>
+                </span>
+              </a>
+            </div>
+
+            <!-- Plan 03: Turmas / Campus -->
+            <div
+              class="col-span-1 relative bg-forest-900/20 backdrop-blur-md border border-white/5 rounded-[2rem] p-8 md:p-10 group hover:bg-forest-900/40 transition-all duration-500 reveal-on-scroll delay-300 flex flex-col h-full"
+            >
+              <div class="flex justify-between items-start mb-8">
+                <div
+                  class="w-12 h-12 rounded-2xl bg-forest-800/50 border border-white/5 grid place-items-center text-forest-300 group-hover:text-emerald-400 group-hover:border-emerald-500/30 transition-all duration-300"
+                >
+                  <iconify-icon icon="solar:buildings-2-linear" width="24" stroke-width="1.5"></iconify-icon>
+                </div>
+                <span class="text-xs font-mono font-bold text-forest-500 bg-white/5 px-2 py-1 rounded border border-white/5">
+                  03
+                </span>
+              </div>
+
+              <div class="mb-2">
+                <span class="text-xs font-medium text-emerald-400 uppercase tracking-widest border border-emerald-500/20 px-2 py-0.5 rounded-md bg-emerald-500/5">
+                  Institucional
+                </span>
+              </div>
+              <h3 class="text-3xl text-white font-dm-sans tracking-tight mb-4">Turmas SENAI</h3>
+              <div class="flex items-baseline gap-1 mb-6">
+                <span class="text-4xl lg:text-5xl font-light text-white font-dm-sans">Custom</span>
+              </div>
+              <p class="text-sm text-forest-300 mb-8 border-b border-white/5 pb-8 font-sans leading-relaxed">
+                Laboratórios completos para turmas presenciais, hackathons e projetos integradores.
+              </p>
+
+              <ul class="space-y-4 mb-10 flex-1">
+                <li class="flex items-center gap-3 text-forest-200 text-sm font-sans">
+                  <iconify-icon icon="solar:check-circle-linear" class="text-emerald-500" width="18"></iconify-icon>
+                  Painel para docentes e turmas
+                </li>
+                <li class="flex items-center gap-3 text-forest-200 text-sm font-sans">
+                  <iconify-icon icon="solar:check-circle-linear" class="text-emerald-500" width="18"></iconify-icon>
+                  Avaliação automatizada de entregas
+                </li>
+                <li class="flex items-center gap-3 text-forest-200 text-sm font-sans">
+                  <iconify-icon icon="solar:check-circle-linear" class="text-emerald-500" width="18"></iconify-icon>
+                  Suporte técnico dedicado
+                </li>
+              </ul>
+
+              <a
+                href="#inscricao"
+                class="w-full py-4 rounded-xl border border-white/10 text-white font-medium hover:bg-white hover:text-forest-950 transition-all duration-300 font-sans text-sm text-center"
+              >
+                Falar com a Coordenação
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           07. LIGHT BAND — DOCUMENTATION CARD + FAQ ACCORDION
+      ========================================================== -->
+      <section id="faq" class="bg-forest-50 border-t border-forest-900/5 py-24 px-6 md:px-12">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <!-- Left: Spectra Documentation Card -->
+          <div class="col-span-1 lg:col-span-5 lg:sticky lg:top-28 reveal-on-scroll">
+            <div class="flex items-center gap-3 mb-4 opacity-80">
+              <span class="text-xs font-mono font-bold tracking-widest text-emerald-700 bg-emerald-100/50 px-2 py-0.5 rounded">
+                06
+              </span>
+              <div class="h-px w-8 bg-forest-900/30"></div>
+              <span class="text-xs font-medium uppercase tracking-widest text-forest-900 font-sans">
+                Suporte &amp; Docs
+              </span>
+            </div>
+
+            <div class="group cursor-pointer">
+              <div
+                class="relative rounded-3xl overflow-hidden shadow-2xl shadow-forest-900/10 border border-forest-900/5 aspect-[4/3] transform transition-transform duration-700 hover:scale-[1.02]"
+              >
+                <img
+                  src="assets/img/docs-preview.webp"
+                  alt="Documentação Spectra + Tailwind CSS"
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 saturate-[0.8] group-hover:saturate-100"
+                />
+                <div class="bg-gradient-to-t from-forest-950/60 to-transparent absolute inset-0"></div>
+                <div
+                  class="absolute top-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full flex items-center gap-2"
+                >
+                  <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-white font-sans">V 4.0 Docs</span>
+                </div>
+              </div>
+
+              <div class="mt-8">
+                <h4 class="text-lg font-semibold text-forest-950 mb-2 font-dm-sans">
+                  Documentação Completa no GitHub
+                </h4>
+                <p class="text-sm text-forest-500 font-sans leading-relaxed mb-4">
+                  Consulte a tabela com as 35 classes utilitárias do Tailwind CSS, os tokens do Spectra Design System e os prints da aplicação.
+                </p>
+                <a
+                  href="https://github.com/ahslammendes/projeto_em_tailwind_css"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-800 transition-colors font-sans group/link"
+                >
+                  Abrir Repositório
+                  <iconify-icon
+                    icon="lucide:arrow-right"
+                    width="16"
+                    class="group-hover/link:translate-x-1 transition-transform"
+                  ></iconify-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Interactive Spectra Accordion -->
+          <div class="col-span-1 lg:col-span-7 flex flex-col">
+            <h2 class="text-4xl md:text-5xl text-forest-950 tracking-tighter font-dm-sans font-normal mb-6 leading-[0.95] reveal-on-scroll">
+              Perguntas <span class="text-emerald-600">Frequentes</span>
+            </h2>
+
+            <!-- FAQ Item 1 -->
+            <div class="group border-b border-forest-900/10 reveal-on-scroll delay-100">
+              <button
+                type="button"
+                class="faq-toggle w-full py-7 flex items-center justify-between text-left focus:outline-none cursor-pointer group-hover:text-emerald-700 transition-colors gap-4"
+                aria-expanded="true"
+              >
+                <span class="text-xl md:text-2xl font-dm-sans font-normal text-forest-950 group-hover:text-emerald-800 transition-colors tracking-tight">
+                  Como o Spectra Design System foi integrado ao Tailwind CSS v4?
+                </span>
+                <div
+                  class="w-10 h-10 shrink-0 rounded-full border border-forest-900/10 flex items-center justify-center text-forest-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-all duration-300 relative"
+                >
+                  <iconify-icon icon="lucide:plus" width="20" stroke-width="1.5" class="absolute transition-transform duration-300 opacity-0 rotate-90 icon-plus"></iconify-icon>
+                  <iconify-icon icon="lucide:minus" width="20" stroke-width="1.5" class="absolute transition-transform duration-300 opacity-100 rotate-0 icon-minus"></iconify-icon>
+                </div>
+              </button>
+              <div class="faq-content grid grid-rows-[1fr] transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                <div class="overflow-hidden">
+                  <div class="pb-7 pr-8">
+                    <p class="text-forest-600 font-sans text-base leading-relaxed">
+                      Todos os tokens de cor `forest-50` a `forest-950` e a fonte `DM Sans` foram registrados via diretiva `@theme` do Tailwind CSS v4, combinados com as superfícies em vidro fosco, bordas gradientes, ícones Iconify (`lucide`, `solar`, `ri`) e animações `reveal-on-scroll`.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="group border-b border-forest-900/10 reveal-on-scroll delay-200">
+              <button
+                type="button"
+                class="faq-toggle w-full py-7 flex items-center justify-between text-left focus:outline-none cursor-pointer group-hover:text-emerald-700 transition-colors gap-4"
+                aria-expanded="false"
+              >
+                <span class="text-xl md:text-2xl font-dm-sans font-normal text-forest-950 group-hover:text-emerald-800 transition-colors tracking-tight">
+                  Quais categorias de classes utilitárias foram aplicadas?
+                </span>
+                <div
+                  class="w-10 h-10 shrink-0 rounded-full border border-forest-900/10 flex items-center justify-center text-forest-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-all duration-300 relative"
+                >
+                  <iconify-icon icon="lucide:plus" width="20" stroke-width="1.5" class="absolute transition-transform duration-300 opacity-100 icon-plus"></iconify-icon>
+                  <iconify-icon icon="lucide:minus" width="20" stroke-width="1.5" class="absolute transition-transform duration-300 opacity-0 rotate-90 icon-minus"></iconify-icon>
+                </div>
+              </button>
+              <div class="faq-content grid grid-rows-[0fr] transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                <div class="overflow-hidden">
+                  <div class="pb-7 pr-8">
+                    <p class="text-forest-600 font-sans text-base leading-relaxed">
+                      O projeto aplica todas as 7 categorias exigidas: Cores, Tipografia, Dimensões, Bordas e Sombras, Flexbox, CSS Grid e Responsividade (`sm:`, `md:`, `lg:`, `xl:`), com 35 classes distintas documentadas no `README.md`.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="group border-b border-forest-900/10 reveal-on-scroll delay-300">
+              <button
+                type="button"
+                class="faq-toggle w-full py-7 flex items-center justify-between text-left focus:outline-none cursor-pointer group-hover:text-emerald-700 transition-colors gap-4"
+                aria-expanded="false"
+              >
+                <span class="text-xl md:text-2xl font-dm-sans font-normal text-forest-950 group-hover:text-emerald-800 transition-colors tracking-tight">
+                  A aplicação funciona sem etapa de build no GitHub Pages?
+                </span>
+                <div
+                  class="w-10 h-10 shrink-0 rounded-full border border-forest-900/10 flex items-center justify-center text-forest-400 group-hover:border-emerald-500/30 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-all duration-300 relative"
+                >
+                  <iconify-icon icon="lucide:plus" width="20" stroke-width="1.5" class="absolute transition-transform duration-300 opacity-100 icon-plus"></iconify-icon>
+                  <iconify-icon icon="lucide:minus" width="20" stroke-width="1.5" class="absolute transition-transform duration-300 opacity-0 rotate-90 icon-minus"></iconify-icon>
+                </div>
+              </button>
+              <div class="faq-content grid grid-rows-[0fr] transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                <div class="overflow-hidden">
+                  <div class="pb-7 pr-8">
+                    <p class="text-forest-600 font-sans text-base leading-relaxed">
+                      Sim! Utilizando o Tailwind CSS v4 Play CDN e os assets locais organizados em `assets/img/` e `assets/js/`, basta abrir o `index.html` ou acessar diretamente o link publicado no GitHub Pages.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           08. CLOSING DARK BAND — INSCRIÇÃO / NEWSLETTER (Top Emerald Glow)
+      ========================================================== -->
+      <section id="inscricao" class="bg-forest-950 border-t border-white/5 relative overflow-hidden py-24 px-6 md:px-12 text-white">
+        <div
+          class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"
+        ></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center reveal-on-scroll">
+          <div class="inline-flex items-center gap-2 mb-6 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+            <span class="text-[10px] font-medium text-emerald-200 uppercase tracking-widest font-sans">
+              Inscrições Abertas • Turma 2026
+            </span>
+          </div>
+
+          <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-dm-sans font-light text-white tracking-tighter mb-6 leading-[0.95]">
+            Pronto para construir com <span class="text-emerald-400 font-normal">Tailwind CSS?</span>
+          </h2>
+
+          <p class="text-base text-forest-300 leading-relaxed max-w-xl mx-auto mb-10 font-sans">
+            Receba desafios práticos semanais, templates baseados no Spectra Design System e novidades da comunidade SENAI DevHub.
+          </p>
+
+          <form
+            id="newsletter-form"
+            class="max-w-xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3"
+          >
             <input
               id="email-input"
               type="email"
               required
               placeholder="seu.email@senai.br"
-              class="w-full sm:w-72 px-4 py-3 rounded-full border border-slate-700 bg-slate-950 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
+              class="w-full sm:flex-1 px-6 py-4 rounded-full border border-white/10 bg-forest-900/40 backdrop-blur-md text-sm text-white placeholder:text-forest-400 focus:outline-none focus:border-emerald-400"
             />
             <button
               type="submit"
-              class="whitespace-nowrap shrink-0 px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold text-white transition-colors shadow-lg shadow-indigo-600/25 cursor-pointer"
+              class="whitespace-nowrap shrink-0 px-8 py-4 bg-white text-forest-950 rounded-full font-medium font-sans text-sm hover:scale-105 transition-transform duration-300 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_-10px_rgba(16,185,129,0.4)] cursor-pointer"
             >
-              Inscrever-se
+              Garantir Vaga
             </button>
           </form>
-        </div>
 
-        <p id="form-feedback" class="hidden mt-4 text-sm font-medium text-emerald-400"></p>
+          <p id="form-feedback" class="hidden mt-5 text-sm font-medium text-emerald-400 font-sans"></p>
+
+          <p class="mt-10 text-xs text-forest-400 font-sans">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+            Projeto acadêmico publicado com código aberto no GitHub Pages.
+          </p>
+        </div>
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 bg-slate-950 mt-12">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
-        <p>© 2026 SENAI DevHub • Desenvolvido com Tailwind CSS</p>
-        <div class="flex items-center gap-6">
-          <a href="#trilhas" class="hover:text-indigo-400 transition-colors">Trilhas</a>
-          <a href="#metricas" class="hover:text-indigo-400 transition-colors">Métricas</a>
-          <a href="https://github.com/ahslammendes/projeto_em_tailwind_css" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition-colors">
-            GitHub
-          </a>
+    <!-- =========================================================
+         09. SPECTRA RAISED FOOTER CARD (Watermark + Numbered Columns + Socials)
+    ========================================================== -->
+    <footer class="relative bg-forest-50 pt-10 pb-12 px-6 md:px-12 overflow-hidden">
+      <div
+        class="max-w-6xl mx-auto bg-white rounded-[2.5rem] border border-forest-900/5 shadow-2xl shadow-forest-900/5 relative overflow-hidden p-8 md:p-14 reveal-on-scroll"
+      >
+        <!-- Giant Subtle Watermark -->
+        <div
+          class="absolute bottom-[-8%] left-1/2 -translate-x-1/2 text-[14vw] leading-none font-dm-sans font-bold text-forest-900/[0.03] select-none pointer-events-none tracking-tighter whitespace-nowrap z-0"
+        >
+          DEVHUB
+        </div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+          <div class="col-span-1 lg:col-span-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-5 text-forest-950">
+                <iconify-icon icon="solar:glasses-linear" width="28" stroke-width="1.5"></iconify-icon>
+                <span class="text-xl font-medium tracking-tight font-dm-sans">SENAI DevHub</span>
+              </div>
+              <p class="text-forest-500 text-sm leading-relaxed max-w-md font-sans mb-8">
+                Aplicação acadêmica desenvolvida com Tailwind CSS v4 e estilizada integralmente com o Spectra Design System.
+              </p>
+              <div class="flex items-center gap-3">
+                <a
+                  href="#"
+                  aria-label="X"
+                  class="w-10 h-10 rounded-full bg-forest-50 border border-forest-100 grid place-items-center text-forest-600 hover:bg-forest-950 hover:text-white hover:border-forest-950 transition-all duration-300"
+                >
+                  <iconify-icon icon="ri:twitter-x-line" width="18"></iconify-icon>
+                </a>
+                <a
+                  href="#"
+                  aria-label="Instagram"
+                  class="w-10 h-10 rounded-full bg-forest-50 border border-forest-100 grid place-items-center text-forest-600 hover:bg-forest-950 hover:text-white hover:border-forest-950 transition-all duration-300"
+                >
+                  <iconify-icon icon="ri:instagram-line" width="18"></iconify-icon>
+                </a>
+                <a
+                  href="#"
+                  aria-label="LinkedIn"
+                  class="w-10 h-10 rounded-full bg-forest-50 border border-forest-100 grid place-items-center text-forest-600 hover:bg-forest-950 hover:text-white hover:border-forest-950 transition-all duration-300"
+                >
+                  <iconify-icon icon="ri:linkedin-fill" width="18"></iconify-icon>
+                </a>
+                <a
+                  href="https://github.com/ahslammendes/projeto_em_tailwind_css"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  class="w-10 h-10 rounded-full bg-forest-50 border border-forest-100 grid place-items-center text-forest-600 hover:bg-forest-950 hover:text-white hover:border-forest-950 transition-all duration-300"
+                >
+                  <iconify-icon icon="ri:github-fill" width="18"></iconify-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-span-1 lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div>
+              <div class="flex items-center gap-2 mb-5">
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-mono">
+                  01
+                </span>
+                <h4 class="font-semibold text-forest-950 font-dm-sans tracking-tight">Plataforma</h4>
+              </div>
+              <ul class="space-y-3">
+                <li><a href="#trilhas" class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium">Trilhas</a></li>
+                <li><a href="#arquitetura" class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium">Arquitetura</a></li>
+                <li><a href="#planos" class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium">Planos</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-2 mb-5">
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-mono">
+                  02
+                </span>
+                <h4 class="font-semibold text-forest-950 font-dm-sans tracking-tight">Recursos</h4>
+              </div>
+              <ul class="space-y-3">
+                <li><a href="#faq" class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium">FAQ</a></li>
+                <li><a href="#comunidade" class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium">Comunidade</a></li>
+                <li><a href="#inscricao" class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium">Inscrição</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="flex items-center gap-2 mb-5">
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-mono">
+                  03
+                </span>
+                <h4 class="font-semibold text-forest-950 font-dm-sans tracking-tight">Entrega</h4>
+              </div>
+              <ul class="space-y-3">
+                <li>
+                  <a
+                    href="https://github.com/ahslammendes/projeto_em_tailwind_css"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium"
+                  >
+                    Repositório GitHub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://ahslammendes.github.io/projeto_em_tailwind_css/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-forest-500 hover:text-forest-950 transition-colors font-medium"
+                  >
+                    GitHub Pages
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="relative z-10 pt-8 border-t border-forest-900/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-forest-500 font-sans"
+        >
+          <p>© 2026 SENAI DevHub • Spectra Design System + Tailwind CSS v4</p>
+          <div class="flex items-center gap-6">
+            <a href="#trilhas" class="hover:text-forest-950 transition-colors">Trilhas</a>
+            <a href="#faq" class="hover:text-forest-950 transition-colors">Documentação</a>
+          </div>
         </div>
       </div>
     </footer>
 
     <script>
-      // Mobile menu toggle
+      // 1. Spectra Navbar Scroll State (mix-blend-difference -> black/95 backdrop-blur-xl)
+      const header = document.getElementById("main-header");
+      const updateHeader = () => {
+        if (window.scrollY > 20) {
+          header.classList.remove("mix-blend-difference");
+          header.classList.add("bg-black/95", "backdrop-blur-xl", "border-b", "border-white/10");
+        } else {
+          header.classList.add("mix-blend-difference");
+          header.classList.remove("bg-black/95", "backdrop-blur-xl", "border-b", "border-white/10");
+        }
+      };
+      window.addEventListener("scroll", updateHeader, { passive: true });
+      updateHeader();
+
+      // 2. Mobile Menu Toggle
       const mobileMenuBtn = document.getElementById("mobile-menu-btn");
       const mobileMenu = document.getElementById("mobile-menu");
       mobileMenuBtn.addEventListener("click", () => {
         mobileMenu.classList.toggle("hidden");
       });
+      document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+        link.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+      });
 
-      // Category filtering
+      // 3. Spectra Scroll Reveal Observer
+      const revealEls = document.querySelectorAll(".reveal-on-scroll");
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.05 }
+        );
+        revealEls.forEach((el) => observer.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add("is-visible"));
+      }
+
+      // 4. Category Filter (Spectra Toggle Well)
       const filterButtons = document.querySelectorAll(".filter-btn");
       const courseCards = document.querySelectorAll(".course-card");
 
       filterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
           const filter = btn.dataset.filter;
-
           filterButtons.forEach((b) => {
-            b.classList.remove("bg-indigo-600", "text-white");
-            b.classList.add("border", "border-slate-800", "bg-slate-900", "text-slate-300");
+            b.classList.remove("bg-forest-800", "text-white", "shadow-lg", "border", "border-white/5");
+            b.classList.add("text-forest-400", "hover:text-white");
           });
-
-          btn.classList.remove("border", "border-slate-800", "bg-slate-900", "text-slate-300");
-          btn.classList.add("bg-indigo-600", "text-white");
+          btn.classList.remove("text-forest-400", "hover:text-white");
+          btn.classList.add("bg-forest-800", "text-white", "shadow-lg", "border", "border-white/5");
 
           courseCards.forEach((card) => {
             if (filter === "all" || card.dataset.category === filter) {
@@ -495,7 +1896,60 @@
         });
       });
 
-      // Newsletter feedback
+      // 5. Interactive Billing Toggle (Mensal / Anual -20%)
+      const btnMonthly = document.getElementById("billing-monthly");
+      const btnAnnual = document.getElementById("billing-annual");
+      const proPrice = document.getElementById("pro-price");
+
+      const setBilling = (mode) => {
+        if (mode === "monthly") {
+          btnMonthly.classList.add("bg-forest-800", "text-white", "shadow-lg", "border", "border-white/5");
+          btnMonthly.classList.remove("text-forest-400");
+          btnAnnual.classList.remove("bg-forest-800", "text-white", "shadow-lg", "border", "border-white/5");
+          btnAnnual.classList.add("text-forest-400");
+          proPrice.textContent = "R$ 49";
+        } else {
+          btnAnnual.classList.add("bg-forest-800", "text-white", "shadow-lg", "border", "border-white/5");
+          btnAnnual.classList.remove("text-forest-400");
+          btnMonthly.classList.remove("bg-forest-800", "text-white", "shadow-lg", "border", "border-white/5");
+          btnMonthly.classList.add("text-forest-400");
+          proPrice.textContent = "R$ 39";
+        }
+      };
+      btnMonthly.addEventListener("click", () => setBilling("monthly"));
+      btnAnnual.addEventListener("click", () => setBilling("annual"));
+
+      // 6. Spectra FAQ Accordion (One Open at a Time + Plus/Minus Cross-Rotate)
+      const faqToggles = document.querySelectorAll(".faq-toggle");
+      faqToggles.forEach((toggle) => {
+        toggle.addEventListener("click", () => {
+          const isOpen = toggle.getAttribute("aria-expanded") === "true";
+
+          faqToggles.forEach((t) => {
+            t.setAttribute("aria-expanded", "false");
+            const content = t.nextElementSibling;
+            content.classList.remove("grid-rows-[1fr]");
+            content.classList.add("grid-rows-[0fr]");
+            t.querySelector(".icon-plus").classList.remove("opacity-0", "rotate-90");
+            t.querySelector(".icon-plus").classList.add("opacity-100");
+            t.querySelector(".icon-minus").classList.remove("opacity-100", "rotate-0");
+            t.querySelector(".icon-minus").classList.add("opacity-0", "rotate-90");
+          });
+
+          if (!isOpen) {
+            toggle.setAttribute("aria-expanded", "true");
+            const content = toggle.nextElementSibling;
+            content.classList.remove("grid-rows-[0fr]");
+            content.classList.add("grid-rows-[1fr]");
+            toggle.querySelector(".icon-plus").classList.remove("opacity-100");
+            toggle.querySelector(".icon-plus").classList.add("opacity-0", "rotate-90");
+            toggle.querySelector(".icon-minus").classList.remove("opacity-0", "rotate-90");
+            toggle.querySelector(".icon-minus").classList.add("opacity-100", "rotate-0");
+          }
+        });
+      });
+
+      // 7. Newsletter Form Feedback
       const form = document.getElementById("newsletter-form");
       const emailInput = document.getElementById("email-input");
       const feedback = document.getElementById("form-feedback");
