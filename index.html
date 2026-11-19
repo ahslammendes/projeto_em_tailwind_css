@@ -204,6 +204,39 @@
           <div class="bg-gradient-to-b from-forest-50/90 via-transparent to-forest-950/40 absolute inset-0"></div>
         </div>
 
+        <!-- Spectra Animated WebGL Aurora Background (Unicorn Studio) -->
+        <div
+          class="aura-background-component top-0 left-0 w-full h-full absolute z-[1] mix-blend-screen pointer-events-none"
+          data-alpha-mask="80"
+          style="
+            mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent);
+          "
+        >
+          <script src="assets/js/unicorn-scene.js"></script>
+          <div
+            data-us-project="n869sLSzeDV4vFdUlTwJ"
+            data-us-project-src="spectra-us-scene"
+            class="absolute w-full h-full left-0 top-0"
+          ></div>
+          <script>
+            !(function () {
+              if (!window.UnicornStudio) {
+                window.UnicornStudio = { isInitialized: false };
+                var s = document.createElement("script");
+                s.src = "assets/js/unicornStudio.umd.js";
+                s.onload = function () {
+                  if (!window.UnicornStudio.isInitialized) {
+                    UnicornStudio.init();
+                    window.UnicornStudio.isInitialized = true;
+                  }
+                };
+                (document.head || document.body).appendChild(s);
+              }
+            })();
+          </script>
+        </div>
+
         <!-- 12-Column Architectural Hairlines -->
         <div
           class="absolute inset-0 z-0 pointer-events-none grid grid-cols-12 gap-4 px-6 md:px-12 w-full max-w-[1600px] mx-auto opacity-[0.08]"
